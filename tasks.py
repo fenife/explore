@@ -3,7 +3,7 @@
 from __future__ import absolute_import, unicode_literals
 
 from explore import db
-from models import *
+from models import (Role, User, Post)
 
 
 def create_data():
