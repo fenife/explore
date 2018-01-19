@@ -2,12 +2,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-# from explore import db
-from models import (Role, User, Post)
-# from models import *
-
-from flask_sqlalchemy import SQLAlchemy
-db = SQLAlchemy()
+from models import (db, Role, User, Post)
 
 
 def create_data():
@@ -36,6 +31,8 @@ def job1(a, b):
 
 def task2():
     print 'Hello World!'
+    with db.app.app_context():
+        print User.query.all()
 
 
 if __name__ == '__main__':

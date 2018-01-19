@@ -3,7 +3,7 @@
 from __future__ import absolute_import
 
 import os
-
+from apscheduler.jobstores.sqlalchemy import SQLAlchemyJobStore
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -33,20 +33,25 @@ class DatabaseConfig(object):
 class APSchedulerConfig(object):
     JOBS = [
         {
-            'id': 'task1',
+            'id': None,
             'func': 'tasks:job1',
             'args': (1, 2),
             'trigger': 'interval',
             'seconds': 10
         },
         {
-            'id': 'task2',
+            'id': None,
             'func': 'tasks:task2',
             'args': None,
             'trigger': 'interval',
             'seconds': 10
         },
     ]
+
+    SCHEDULER_JOBSTORES_URL = "sqlite:///" + os.path.join(basedir, 'task.db')
+    SCHEDULER_JOBSTORES = {
+        'default': SQLAlchemyJobStore(url=SCHEDULER_JOBSTORES_URL)
+    }
 
     SCHEDULER_API_ENABLED = True
 
