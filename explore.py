@@ -20,6 +20,7 @@ def create_app(config_name):
     config[config_name].init_app(app)
 
     db.init_app(app)
+
     scheduler.init_app(app)
     print scheduler.get_jobs()
 
@@ -35,7 +36,6 @@ def hello_world():
 
 
 if __name__ == '__main__':
-    app = app
     scheduler.start()
     app.run(debug=True)
 

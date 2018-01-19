@@ -8,7 +8,7 @@ import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
-class Config(object):
+class BaseConfig(object):
     SECRET_KEY = os.urandom(24)
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
@@ -33,9 +33,16 @@ class DatabaseConfig(object):
 class APSchedulerConfig(object):
     JOBS = [
         {
-            'id': 'job1',
+            'id': 'task1',
             'func': 'tasks:job1',
             'args': (1, 2),
+            'trigger': 'interval',
+            'seconds': 10
+        },
+        {
+            'id': 'task2',
+            'func': 'tasks:task2',
+            'args': None,
             'trigger': 'interval',
             'seconds': 10
         },
@@ -44,16 +51,33 @@ class APSchedulerConfig(object):
     SCHEDULER_API_ENABLED = True
 
 
-class DevConfig(Config, APSchedulerConfig):
-    SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, 'data.sqlite')
+class ConfigSet(BaseConfig, DatabaseConfig, APSchedulerConfig):
+    pass
+
+
+class DevConfig(ConfigSet):
+    """ 开发环境配置 """
+    # SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, 'data.sqlite')
 
     @classmethod
     def init_app(cls, app):
-        Config.init_app(app)
+        BaseConfig.init_app(app)
+
+
+class TestConfig(ConfigSet):
+    """ 测试环境配置 """
+    pass
+
+
+class ProductionConfig(ConfigSet):
+    """ 生产环境配置 """
+    pass
 
 
 config = {
     'default': DevConfig,
-    'dev': DevConfig
+    'dev': DevConfig,
+    'test': TestConfig,
+    'production': ProductionConfig,
 }
 

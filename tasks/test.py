@@ -34,5 +34,9 @@ def job1(a, b):
     print str(a) + ' ' + str(b)
 
 
+def task2():
+    print 'Hello World!'
+
+
 if __name__ == '__main__':
     print 'tasks'
