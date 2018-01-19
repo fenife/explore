@@ -2,15 +2,31 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
+import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_apscheduler import APScheduler
 
-import config
+from config import config
 
-app = Flask(__name__)
-app.config.from_object(config)      # 配置
 
-db = SQLAlchemy(app)
+db = SQLAlchemy()
+scheduler = APScheduler()
+
+
+def create_app(config_name):
+    app = Flask(__name__)
+    app.config.from_object(config[config_name])
+    config[config_name].init_app(app)
+
+    db.init_app(app)
+    scheduler.init_app(app)
+    print scheduler.get_jobs()
+
+    return app
+
+
+app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 
 
 @app.route('/')

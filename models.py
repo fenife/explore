@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-from explore import db
+from flask_sqlalchemy import SQLAlchemy
+db = SQLAlchemy()
 
 
 class Role(db.Model):

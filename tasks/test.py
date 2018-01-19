@@ -2,8 +2,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-from explore import db
+# from explore import db
 from models import (Role, User, Post)
+# from models import *
+
+from flask_sqlalchemy import SQLAlchemy
+db = SQLAlchemy()
 
 
 def create_data():
@@ -24,6 +28,10 @@ def create_data():
     db.session.commit()
     db.session.close()
     print 'success'
+
+
+def job1(a, b):
+    print str(a) + ' ' + str(b)
 
 
 if __name__ == '__main__':
