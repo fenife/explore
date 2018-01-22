@@ -1,13 +1,14 @@
 alembic==0.9.6
-amqp==2.2.2
+amqp==1.4.9
+anyjson==0.3.3
 APScheduler==3.5.1
 asn1crypto==0.24.0
 Babel==2.5.3
 backports.ssl-match-hostname==3.5.0.1
-billiard==3.5.0.3
+billiard==3.3.0.23
 boto3==1.5.16
 botocore==1.8.30
-celery==4.1.0
+celery==3.1.18
 certifi==2017.11.5
 cffi==1.11.4
 chardet==3.0.4
@@ -39,7 +40,7 @@ ipaddress==1.0.19
 itsdangerous==0.24
 Jinja2==2.10
 jmespath==0.9.3
-kombu==4.1.0
+kombu==3.0.37
 Mako==1.0.7
 Markdown==2.6.8
 MarkupSafe==1.0

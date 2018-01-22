@@ -36,7 +36,7 @@ def hello_world():
 
 
 if __name__ == '__main__':
-    scheduler.start()
+    # scheduler.start()
     app.run(debug=True)
 
 
