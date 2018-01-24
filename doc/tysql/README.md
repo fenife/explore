@@ -11,6 +11,8 @@ see: http://forta.com/books/0672336073/
 
 ## Insatall 
 
-> cp tysql.sqlite.bak ../../tysql.sqlite
+```sh
+cp tysql.sqlite.bak ../../tysql.sqlite
+```
 
 Enjoy!

@@ -2,7 +2,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
 
-""" 《SQL必知必会》中的样例表 """
+""" 
+《SQL必知必会》中的样例表 
+More details: doc/tysql/
+"""
 
 
 from . import db
