@@ -25,11 +25,11 @@ def create_data():
     print 'success'
 
 
-def job1(a, b):
+def task_1(a, b):
     print str(a) + ' ' + str(b)
 
 
-def task2():
+def task_2():
     print 'Hello World!'
     with db.app.app_context():
         print User.query.all()
