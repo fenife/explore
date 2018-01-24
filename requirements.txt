@@ -63,7 +63,7 @@ s3transfer==0.1.12
 scandir==1.6
 simplejson==3.10.0
 six==1.10.0
-SQLAlchemy==1.1.9
+SQLAlchemy==1.2.0
 SQLAlchemy-Utils==0.32.16
 sqlparse==0.2.3
 superset==0.22.1
