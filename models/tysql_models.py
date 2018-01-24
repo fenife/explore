@@ -22,7 +22,8 @@ class Vendors(db.Model):
     vend_state = db.Column(db.String(5), nullable=True, comment='供应商所在州')
     vend_zip = db.Column(db.String(10), nullable=True, comment='供应商地址邮政编码')
     vend_country = db.Column(db.String(50), nullable=True, comment='供应商所在国家')
-    # 关联的产品
+
+    # 此供应商的所有产品
     products = db.relationship('Products', backref='vendor', lazy='dynamic')
 
     def __repr__(self):
@@ -43,6 +44,9 @@ class Customers(db.Model):
     cust_contact = db.Column(db.String(50), nullable=True, comment='顾客联系名')
     cust_email = db.Column(db.String(255), nullable=True, comment='顾客的电子邮件')
 
+    # 此顾客的所有订单
+    orders = db.relationship('Orders', backref='customer', lazy='dynamic')
+
     def __repr__(self):
         return '<Customer %r>' % self.cust_name
 
@@ -52,11 +56,15 @@ class Products(db.Model):
     __bind_key__ = 'tysql'
     __tablename__ = 'products'
     prod_id = db.Column(db.String(10), primary_key=True, nullable=False, comment='产品ID')
-    # 产品供应商ID（关联到Vendors表的vend_id）
-    vend_id = db.Column(db.String(10), db.ForeignKey('vendors.vend_id'))
     prod_name = db.Column(db.String(255), nullable=False, comment='产品名')
     prod_price = db.Column(db.DECIMAL(8, 2), nullable=False, comment='产品价格')
     prod_desc = db.Column(db.Text, nullable=True, comment='产品描述')
+
+    # 产品供应商ID（关联到Vendors表的vend_id）
+    vend_id = db.Column(db.String(10), db.ForeignKey('vendors.vend_id'), comment='产品供应商ID')
+
+    # 此商品关联的条目
+    orderitems = db.relationship('OrderItems', backref='product', lazy='dynamic')
 
     def __repr__(self):
         return '<Product %r>' % self.prod_name
@@ -66,9 +74,14 @@ class Orders(db.Model):
     """ 订单表 """
     __bind_key__ = 'tysql'
     __tablename__ = 'orders'
-    order_num = db.Column(db.Integer(11), nullable=False, comment='唯一的订单号')
+    order_num = db.Column(db.Integer, primary_key=True, nullable=False, comment='唯一的订单号')
     order_date = db.Column(db.Date, nullable=False, comment='订单日期')
-    cust_id = None  # 订单顾客ID（关联到Customers表的cust_id）
+
+    # 订单顾客ID（关联到Customers表的cust_id）
+    cust_id = db.Column(db.String(10), db.ForeignKey('customers.cust_id'), comment='订单顾客ID')
+
+    # 此订单的所有物品条目
+    orderitems = db.relationship('OrderItems', backref='order', lazy='dynamic')
 
     def __repr__(self):
         return '<Order %r>' % self.order_num
@@ -78,11 +91,19 @@ class OrderItems(db.Model):
     """ 订单物品条目 """
     __bind_key__ = 'tysql'
     __tablename__ = 'orderitems'
-    order_num = None    # 订单号（关联到Orders表的order_num）
-    prod_id = None      # 产品ID（关联到Products表的prod_id）
-    order_item = db.Column(db.Integer(11), nullable=False, comment='订单物品号（订单内的顺序）')
-    quantity = db.Column(db.Integer(11), nullable=False, comment='物品数量')
+    order_item = db.Column(db.Integer, nullable=False, comment='订单物品号（订单内的顺序）')
+    quantity = db.Column(db.Integer, nullable=False, comment='物品数量')
     item_price = db.Column(db.DECIMAL(8, 2), nullable=False, comment='物品价格')
+
+    # 订单号（关联到Orders表的order_num）
+    order_num = db.Column(db.Integer, db.ForeignKey('orders.order_num'), comment='订单号')
+
+    # 产品ID（关联到Products表的prod_id）
+    prod_id = db.Column(db.String(10), db.ForeignKey('products.prod_id'), comment='产品ID')
+
+    __table_args__ = (
+        db.PrimaryKeyConstraint('order_num', 'order_item'),
+    )
 
     def __repr__(self):
         return '<Item %r>' % self.order_item
