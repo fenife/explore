@@ -7,16 +7,16 @@ import logging
 from flask import Flask
 from flask_apscheduler import APScheduler
 
-from config import config, basedir
+import config
+from config import basedir
 
 
 scheduler = APScheduler()
 
 
-def create_app(config_name):
+def create_app():
     app = Flask(__name__)
-    app.config.from_object(config[config_name])
-    config[config_name].init_app(app)
+    app.config.from_object(config)
 
     from models import db
     db.app = app
@@ -28,7 +28,7 @@ def create_app(config_name):
     return app
 
 
-app = create_app(os.getenv('FLASK_CONFIG') or 'default')
+app = create_app()
 
 
 # 日志系统管理
