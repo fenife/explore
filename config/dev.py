@@ -26,6 +26,7 @@ SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, 'data.sqlite')
 # 副表
 SQLALCHEMY_BINDS = {
     'tysql': 'mysql://{username}:{password}@{host}:{port}/{dbname}?charset=utf8'.format(**MYSQL_DB),
+    # 'tysql': "sqlite:///" + os.path.join(basedir, 'tysql.sqlite'),
 
 }
 
