@@ -11,8 +11,23 @@ DEBUG = True
 
 
 # SQLAlchemy config
-SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, 'data.sqlite')
+MYSQL_DB = dict(
+    host="localhost",
+    port=3306,
+    username="root",
+    password="root",
+    dbname="tysql"
+)
 
+# 主表
+SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(basedir, 'data.sqlite')
+# SQLALCHEMY_DATABASE_URI = 'mysql://{username}:{password}@{host}:{port}/{dbname}?charset=utf8'.format(**MYSQL_DB)
+
+# 副表
+SQLALCHEMY_BINDS = {
+    'tysql': 'mysql://{username}:{password}@{host}:{port}/{dbname}?charset=utf8'.format(**MYSQL_DB),
+
+}
 
 # APScheduler
 SCHEDULER_API_ENABLED = True
