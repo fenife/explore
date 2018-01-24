@@ -11,6 +11,24 @@ More details: doc/tysql/
 from . import db
 
 
+class Vendors(db.Model):
+    """ 供应商信息 """
+    __bind_key__ = 'tysql'
+    __tablename__ = 'vendors'
+    vend_id = db.Column(db.String(10), primary_key=True, nullable=False, comment='供应商ID')
+    vend_name = db.Column(db.String(50), nullable=False, comment='供应商名称')
+    vend_address = db.Column(db.String(50), nullable=True, comment='供应商地址')
+    vend_city = db.Column(db.String(50), nullable=True, comment='供应商所在城市')
+    vend_state = db.Column(db.String(5), nullable=True, comment='供应商所在州')
+    vend_zip = db.Column(db.String(10), nullable=True, comment='供应商地址邮政编码')
+    vend_country = db.Column(db.String(50), nullable=True, comment='供应商所在国家')
+    # 关联的产品
+    products = db.relationship('Products', backref='vendor', lazy='dynamic')
+
+    def __repr__(self):
+        return '<Vendor %r>' % self.vend_name
+
+
 class Customers(db.Model):
     """ 顾客信息 """
     __bind_key__ = 'tysql'
@@ -24,3 +42,50 @@ class Customers(db.Model):
     cust_country = db.Column(db.String(50), nullable=True, comment='顾客所在国家')
     cust_contact = db.Column(db.String(50), nullable=True, comment='顾客联系名')
     cust_email = db.Column(db.String(255), nullable=True, comment='顾客的电子邮件')
+
+    def __repr__(self):
+        return '<Customer %r>' % self.cust_name
+
+
+class Products(db.Model):
+    """ 产品信息 """
+    __bind_key__ = 'tysql'
+    __tablename__ = 'products'
+    prod_id = db.Column(db.String(10), primary_key=True, nullable=False, comment='产品ID')
+    # 产品供应商ID（关联到Vendors表的vend_id）
+    vend_id = db.Column(db.String(10), db.ForeignKey('vendors.vend_id'))
+    prod_name = db.Column(db.String(255), nullable=False, comment='产品名')
+    prod_price = db.Column(db.DECIMAL(8, 2), nullable=False, comment='产品价格')
+    prod_desc = db.Column(db.Text, nullable=True, comment='产品描述')
+
+    def __repr__(self):
+        return '<Product %r>' % self.prod_name
+
+
+class Orders(db.Model):
+    """ 订单表 """
+    __bind_key__ = 'tysql'
+    __tablename__ = 'orders'
+    order_num = db.Column(db.Integer(11), nullable=False, comment='唯一的订单号')
+    order_date = db.Column(db.Date, nullable=False, comment='订单日期')
+    cust_id = None  # 订单顾客ID（关联到Customers表的cust_id）
+
+    def __repr__(self):
+        return '<Order %r>' % self.order_num
+
+
+class OrderItems(db.Model):
+    """ 订单物品条目 """
+    __bind_key__ = 'tysql'
+    __tablename__ = 'orderitems'
+    order_num = None    # 订单号（关联到Orders表的order_num）
+    prod_id = None      # 产品ID（关联到Products表的prod_id）
+    order_item = db.Column(db.Integer(11), nullable=False, comment='订单物品号（订单内的顺序）')
+    quantity = db.Column(db.Integer(11), nullable=False, comment='物品数量')
+    item_price = db.Column(db.DECIMAL(8, 2), nullable=False, comment='物品价格')
+
+    def __repr__(self):
+        return '<Item %r>' % self.order_item
+
+
+
