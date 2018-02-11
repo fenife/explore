@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, unicode_literals
+from __future__ import absolute_import, unicode_literals, print_function
 
 from models.test_models import (db, Role, User, Post)
 
 
 def create_data():
-    print 'start'
+    print('start')
     db.create_all()
 
     admin = Role(name='Admin')
@@ -22,18 +22,18 @@ def create_data():
 
     db.session.commit()
     db.session.close()
-    print 'success'
+    print('success')
 
 
 def task_1(a, b):
-    print str(a) + ' ' + str(b)
+    print(str(a) + ' ' + str(b))
 
 
 def task_2():
-    print 'Hello World!'
+    print('Hello World!')
     with db.app.app_context():
-        print User.query.all()
+        print(User.query.all())
 
 
 if __name__ == '__main__':
-    print 'tasks'
+    print('tasks')

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import, unicode_literals
+from __future__ import absolute_import, unicode_literals, print_function
 
 from flask import Flask
 from flask_apscheduler import APScheduler
@@ -20,8 +20,7 @@ def create_app():
     db.app = app
     db.init_app(app)
 
-    scheduler.init_app(app)
-    print scheduler.get_jobs()
+    # scheduler.init_app(app)
 
     return app
 
